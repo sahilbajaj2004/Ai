@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useState } from 'react'
 import run from '../gemini';
 export const datacontext = createContext()
@@ -17,13 +18,13 @@ function UserContext({ children }) {
     }
     async function aiResponse(prompt) {
         let text = await run(prompt)
-        let newText = text.split("**") && text.split("*") && text.replace("google", "Sahil bajaj") && text.replace("Google", "Sahil bajaj")
+        let newText = text.split("**") && text.split("*") && text.replace("google", "Team Junior") && text.replace("Google", "Team Junior")
         setPrompt(newText)
         speak(newText)
         setResponse(true)
         setTimeout(() => {
             setSpeaking(false)
-        }, 5000)
+        },6000)
 
 
     }

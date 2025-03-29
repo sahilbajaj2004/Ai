@@ -12,20 +12,20 @@ function App() {
   return (
     <div className='main'>
       <img src={va} alt="" id="galaxy" />
-      <span>I'm Galaxy, Your Advanced Virtual Assistant</span>
+      <span>I'm Galaxy, Your Personal Chatbot</span>
       {!speaking ?
         <button onClick={() => {
           setPrompt("listening...")
           setSpeaking(true)
           setResponse(false)
           recognition.start()
-        }}>Click here <CiMicrophoneOn /></button>
+        }}>Ask <CiMicrophoneOn /></button>
         :
         <div className='response'>
           {!response ?
             <img src={speakimg} alt="" id="speak" />
             :
-            <img src={aigif} alt="" id="aigif" />}
+            <img src={aigif} alt="" id="ai" />}
           <p>{prompt}</p>
         </div>
 

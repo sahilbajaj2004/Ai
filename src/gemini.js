@@ -17,7 +17,7 @@ const generationConfig = {
   temperature: 1,
   topP: 0.95,
   topK: 40,
-  maxOutputTokens: 20,
+  maxOutputTokens: 25,
   responseMimeType: "text/plain",
 };
 
@@ -27,7 +27,6 @@ async function run(prompt) {
     history: [
     ],
   });
-  // const hindiPrompt = `Please respond in Hindi: ${prompt}
 
   const result = await chatSession.sendMessage(prompt);
   return result.response.text()
