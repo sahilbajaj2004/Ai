@@ -31,8 +31,7 @@ function UserContext({ children }) {
         setPrompt(newText);
         speak(newText);
         setResponse(true);
-
-        // Update history
+        
         setHistory((prevHistory) => [
             ...prevHistory,
             { user: prompt, ai: newText },
