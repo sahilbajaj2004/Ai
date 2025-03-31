@@ -14,7 +14,7 @@ function App() {
       <img src={va} alt="" id="galaxy" />
       <span>I'm Galaxy, Your Personal Chatbot</span>
       {!speaking ?
-        <button onClick={() => {
+        <button id='button' onClick={() => {
           setPrompt("listening...")
           setSpeaking(true)
           setResponse(false)
@@ -30,6 +30,8 @@ function App() {
         </div>
 
       }
+
+
 
     </div>
   )

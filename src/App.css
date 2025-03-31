@@ -22,7 +22,7 @@ span {
   /* color: transparent; */
 }
 
-button {
+#button {
   width: 180px;
   height: 40px;
   display: flex;
