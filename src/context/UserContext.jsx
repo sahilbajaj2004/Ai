@@ -1,7 +1,9 @@
 /* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons'; 
 import run from '../gemini';
-import HistoryLog from '../components/HistoryLog';
+// import HistoryLog from '../components/HistoryLog';
 
 export const datacontext = createContext();
 
@@ -41,6 +43,21 @@ function UserContext({ children }) {
             setSpeaking(false);
         }, 6000);
     }
+    function handleNewChat() {
+        // Refresh the page to start a new chat
+        window.location.reload();
+    }
+    let [chatOpen, setChatOpen] = useState(false);
+    let [chatInput, setChatInput] = useState('');
+
+    function handleChatSubmit(e) {
+        e.preventDefault();
+        if (chatInput.trim()) {
+            aiResponse(chatInput);
+            setChatInput('');
+        }
+    }
+    
 
     let speechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     let recognition = new speechRecognition();
@@ -102,7 +119,55 @@ function UserContext({ children }) {
             aiResponse(command);
         }
     }
+    function HistoryLog({ history, showHistory, toggleHistory }) {
+        return (
+            <>
+                <button
+                    onClick={toggleHistory}
+                    style={{
+                        position: 'fixed',
+                        bottom: '20px',
+                        right: '20px',
+                        backgroundColor: 'transparent',
+                        border: 'none',
+                        cursor: 'pointer',
+                        fontSize: '24px',
+                    }}
+                >
+                    🕒
+                </button>
 
+                {showHistory && (
+                    <div
+                        style={{
+                            position: 'fixed',
+                            bottom: '80px',
+                            right: '20px',
+                            width: '300px',
+                            maxHeight: '400px',
+                            overflowY: 'auto',
+                            backgroundColor: 'white',
+                            border: '1px solid #ccc',
+                            borderRadius: '10px',
+                            padding: '10px',
+                            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+                        }}
+                    >
+                        <h4>History</h4>
+                        <ul style={{ listStyle: 'none', padding: 0 }}>
+                            {history.map((entry, index) => (
+                                <li key={index} style={{ marginBottom: '10px' }}>
+                                    <strong>User:</strong> {entry.user}
+                                    <br />
+                                    <strong>AI:</strong> {entry.ai}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
+            </>
+        );
+    }
     let value = {
         recognition,
         speaking,
@@ -119,6 +184,104 @@ function UserContext({ children }) {
     return (
         <div>
             <datacontext.Provider value={value}>
+                {/* Plus Icon Button */}
+                <button
+                    onClick={handleNewChat}
+                    style={{
+                        position: 'absolute',
+                        top: '20px',
+                        left: '20px',
+                        background: 'transparent',
+                        border: 'none',
+                        cursor: 'pointer',
+                        color: 'white',
+                    }}
+                >
+                    <FontAwesomeIcon icon={faPlus} size="2x" color="white" />
+                </button>
+                {/* Message Button */}
+                <button
+                    onClick={() => setChatOpen(!chatOpen)}
+                    style={{
+                        position: 'fixed',
+                        bottom: '20px',
+                        left: '20px',
+                        background:'transparent',
+                        border: 'none',
+                        borderRadius: '50%',
+                        width: '50px',
+                        height: '50px',
+                        color: 'black',
+                        fontSize: '18px',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}
+                >
+                    💬
+                </button>
+
+                {/* Chat Modal */}
+                {chatOpen && (
+                    <div
+                        style={{
+                            position: 'fixed',
+                            bottom: '80px',
+                            left: '20px',
+                            width: '300px',
+                            background: 'white',
+                            borderRadius: '10px',
+                            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+                            padding: '10px',
+                            zIndex: 1000,
+                        }}
+                    >
+                        <div
+                            style={{
+                                maxHeight: '200px',
+                                overflowY: 'auto',
+                                marginBottom: '10px',
+                            }}
+                        >
+                            {history.map((entry, index) => (
+                                <div key={index}>
+                                    <p style={{ color: 'black' }}><strong>You:</strong> {entry.user}</p>
+                                    <p style={{ color: 'black' }}><strong>AI:</strong> {entry.ai}</p>
+                                </div>
+                            ))}
+                        </div>
+                        <form onSubmit={handleChatSubmit}>
+                            <input
+                                type="text"
+                                value={chatInput}
+                                onChange={(e) => setChatInput(e.target.value)}
+                                placeholder="Type your message..."
+                                style={{
+                                    width: 'calc(100% - 50px)',
+                                    padding: '5px',
+                                    borderRadius: '5px',
+                                    border: '1px solid #ccc',
+                                    marginRight: '5px',
+                                }}
+                            />
+                            <button
+                                type="submit"
+                                style={{
+                                    background: '#007bff',
+                                    color: 'black',
+                                    border: 'none',
+                                    borderRadius: '5px',
+                                    padding: '5px 10px',
+                                    cursor: 'pointer',
+                                }}
+                            >
+                                Send
+                            </button>
+                        </form>
+                    </div>
+                )}
+
                 {children}
                 <HistoryLog
                     history={history}
