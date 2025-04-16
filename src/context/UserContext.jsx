@@ -1,5 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useState } from 'react';
+import { ref, push } from "firebase/database";
+import database from "../firebaseConfig";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import run from '../gemini';
@@ -33,6 +35,14 @@ function UserContext({ children }) {
         setPrompt(newText);
         speak(newText);
         setResponse(true);
+
+        // Save chat to Firebase
+        const chatRef = ref(database, "chats");
+        push(chatRef, {
+            user: prompt,
+            ai: newText,
+            timestamp: new Date().toISOString(),
+        });
 
         setHistory((prevHistory) => [
             ...prevHistory,
