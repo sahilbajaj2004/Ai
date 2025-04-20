@@ -2,14 +2,16 @@
 import React, { createContext, useState } from 'react';
 import { ref, push } from "firebase/database";
 import database from "../firebaseConfig";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { FaPlus } from "react-icons/fa";
+import { FaClock } from "react-icons/fa";
 import { FaMessage } from "react-icons/fa6";
 import { FaMusic } from "react-icons/fa";
+import { FaGamepad } from "react-icons/fa";
 import run from '../gemini';
-// import HistoryLog from '../components/HistoryLog';
+
 
 export const datacontext = createContext();
+
 
 function UserContext({ children }) {
     let [speaking, setSpeaking] = useState(false);
@@ -17,6 +19,8 @@ function UserContext({ children }) {
     let [response, setResponse] = useState(false);
     let [history, setHistory] = useState([]);
     let [showHistory, setShowHistory] = useState(false);
+    let [showGameCenter, setShowGameCenter] = useState(false);
+
 
     function speak(text) {
         let text_speak = new SpeechSynthesisUtterance(text);
@@ -26,6 +30,7 @@ function UserContext({ children }) {
         text_speak.lang = 'hi-GB';
         window.speechSynthesis.speak(text_speak);
     }
+
 
     async function aiResponse(prompt) {
         let text = await run(prompt);
@@ -55,12 +60,17 @@ function UserContext({ children }) {
             setSpeaking(false);
         }, 6000);
     }
+
+
     function handleNewChat() {
         // Refresh the page to start a new chat
         window.location.reload();
     }
+
+
     let [chatOpen, setChatOpen] = useState(false);
     let [chatInput, setChatInput] = useState('');
+
 
     function handleChatSubmit(e) {
         e.preventDefault();
@@ -80,6 +90,7 @@ function UserContext({ children }) {
         takeCommand(transcript.toLowerCase());
     };
 
+    
     function takeCommand(command) {
         if (command.includes('open') && command.includes('youtube')) {
             window.open('https://www.youtube.com/', '_blank');
@@ -131,6 +142,22 @@ function UserContext({ children }) {
             aiResponse(command);
         }
     }
+
+
+    let value = {
+        recognition,
+        speaking,
+        setSpeaking,
+        prompt,
+        setPrompt,
+        response,
+        setResponse,
+        history,
+        showHistory,
+        setShowHistory,
+    };
+
+
     function HistoryLog({ history, showHistory, toggleHistory }) {
         return (
             <>
@@ -138,15 +165,16 @@ function UserContext({ children }) {
                     onClick={toggleHistory}
                     style={{
                         position: 'fixed',
-                        bottom: '20px',
+                        bottom: '15px',
                         right: '20px',
-                        backgroundColor: 'transparent',
+                        backgroundColor: 'black',
+                        color: 'white',
                         border: 'none',
                         cursor: 'pointer',
-                        fontSize: '24px',
+                        fontSize: '20px',
                     }}
                 >
-                    🕒
+                    <FaClock />
                 </button>
 
                 {showHistory && (
@@ -180,18 +208,110 @@ function UserContext({ children }) {
             </>
         );
     }
-    let value = {
-        recognition,
-        speaking,
-        setSpeaking,
-        prompt,
-        setPrompt,
-        response,
-        setResponse,
-        history,
-        showHistory,
-        setShowHistory,
-    };
+
+
+    function GameCenter({ showGameCenter, toggleGameCenter }) {
+        const games = [
+            { name: 'Tic Tac Toe', url: 'https://playtictactoe.org/' },
+            { name: 'Snake Game', url: 'https://playsnake.org/' },
+            { name: '2048', url: 'https://play2048.co/' },
+        ];
+
+        function openGameInPopup(url) {
+            const width = 600; // Width of the popup window
+            const height = 400; // Height of the popup window
+            const left = (window.innerWidth - width) / 2; // Center the popup horizontally
+            const top = (window.innerHeight - height) / 2; // Center the popup vertically
+            window.open(
+                url,
+                'GamePopup',
+                `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes`
+            );
+        }
+
+
+        return (
+            <>
+                {/* Game Center Button */}
+                <button
+                    onClick={toggleGameCenter}
+                    style={{
+                        position: 'fixed',
+                        bottom: '45px',
+                        right: '5px',
+                        background: 'transparent',
+                        border: 'none',
+                        borderRadius: '50%',
+                        width: '50px',
+                        height: '50px',
+                        color: 'white',
+                        fontSize: '22px',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}
+                >
+                    <FaGamepad />
+                </button>
+
+                {/* Game Center Popup */}
+                {showGameCenter && (
+                    <div
+                        style={{
+                            position: 'fixed',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            width: '300px',
+                            background: 'white',
+                            borderRadius: '10px',
+                            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+                            padding: '20px',
+                            zIndex: 1000,
+                        }}
+                    >
+                        <h3>Select a Game</h3>
+                        <ul style={{ listStyle: 'none', padding: 0 }}>
+                            {games.map((game, index) => (
+                                <li key={index} style={{ marginBottom: '10px' }}>
+                                    <button
+                                        onClick={() => openGameInPopup(game.url)}
+                                        style={{
+                                            width: '100%',
+                                            padding: '10px',
+                                            borderRadius: '5px',
+                                            border: '1px solid #ccc',
+                                            background: '#007bff',
+                                            color: 'white',
+                                            cursor: 'pointer',
+                                        }}
+                                    >
+                                        {game.name}
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                        <button
+                            onClick={toggleGameCenter}
+                            style={{
+                                marginTop: '10px',
+                                padding: '10px',
+                                borderRadius: '5px',
+                                border: '1px solid #ccc',
+                                background: '#ff4d4d',
+                                color: 'white',
+                                cursor: 'pointer',
+                            }}
+                        >
+                            Close
+                        </button>
+                    </div>
+                )}
+            </>
+        );
+    }
+
 
     return (
         <div>
@@ -207,10 +327,13 @@ function UserContext({ children }) {
                         border: 'none',
                         cursor: 'pointer',
                         color: 'white',
+                        fontSize:'25px'
                     }}
                 >
-                    <FontAwesomeIcon icon={faPlus} size="2x" color="white" />
+                    <FaPlus />
                 </button>
+
+
                 {/* Message Button */}
                 <button
                     onClick={() => setChatOpen(!chatOpen)}
@@ -293,6 +416,7 @@ function UserContext({ children }) {
                     </div>
                 )}
 
+
                 {/* Music Button */}
                 <button
                     onClick={() => {
@@ -325,6 +449,14 @@ function UserContext({ children }) {
                 >
                     <FaMusic />
                 </button>
+
+
+                {/* Game Center */}
+                <GameCenter
+                    showGameCenter={showGameCenter}
+                    toggleGameCenter={() => setShowGameCenter(!showGameCenter)}
+                />
+
 
                 {children}
                 <HistoryLog
