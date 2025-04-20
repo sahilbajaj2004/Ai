@@ -4,6 +4,8 @@ import { ref, push } from "firebase/database";
 import database from "../firebaseConfig";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { FaMessage } from "react-icons/fa6";
+import { FaMusic } from "react-icons/fa";
 import run from '../gemini';
 // import HistoryLog from '../components/HistoryLog';
 
@@ -214,14 +216,14 @@ function UserContext({ children }) {
                     onClick={() => setChatOpen(!chatOpen)}
                     style={{
                         position: 'fixed',
-                        bottom: '20px',
-                        left: '20px',
+                        bottom: '5px',
+                        left: '5px',
                         background: 'transparent',
                         border: 'none',
                         borderRadius: '50%',
                         width: '50px',
                         height: '50px',
-                        color: 'black',
+                        color: 'white',
                         fontSize: '18px',
                         cursor: 'pointer',
                         display: 'flex',
@@ -229,7 +231,7 @@ function UserContext({ children }) {
                         justifyContent: 'center',
                     }}
                 >
-                    💬
+                    <FaMessage />
                 </button>
                 {/* Chat Modal */}
                 {chatOpen && (
@@ -290,6 +292,39 @@ function UserContext({ children }) {
                         </form>
                     </div>
                 )}
+
+                {/* Music Button */}
+                <button
+                    onClick={() => {
+                        const width = 800;
+                        const height = 600;
+                        const left = (window.innerWidth - width) / 2;
+                        const top = (window.innerHeight - height) / 2;
+                        window.open(
+                            'https://open.spotify.com/playlist/2q0HXM084r5ZsjnoWRcriI?si=Lh97wNtETh-xH1uW3cWaPg',
+                            'SpotifyPlaylist',
+                            `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes`
+                        );
+                    }}
+                    style={{
+                        position: 'fixed',
+                        top: '45px',
+                        left: '5px',
+                        background: 'transparent',
+                        border: 'none',
+                        borderRadius: '50%',
+                        width: '50px',
+                        height: '50px',
+                        color: 'white',
+                        fontSize: '20px',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}
+                >
+                    <FaMusic />
+                </button>
 
                 {children}
                 <HistoryLog
