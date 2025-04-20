@@ -7,6 +7,7 @@ import speakimg from "./assets/speak.gif";
 import aigif from "./assets/aiVoice.gif";
 import Login from "./components/Login";
 
+
 function App() {
   const { recognition, speaking, setSpeaking, prompt, response, setPrompt, setResponse } = useContext(datacontext);
   const [USER, setUser] = useState(null);
@@ -17,7 +18,7 @@ function App() {
         <Login onUserChange={setUser} />
       </div>
       <img src={va} alt="" id="galaxy" />
-      <span>I'm Galaxy, Your Personal Chatbot</span>
+      <span>I’m here if you feel like talking</span>
       {!speaking ? (
         <button id='button' onClick={() => {
           setPrompt("listening...");

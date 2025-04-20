@@ -30,8 +30,8 @@ function UserContext({ children }) {
         let newText =
             text.split('**') &&
             text.split('*') &&
-            text.replace('google', 'Team Junior') &&
-            text.replace('Google', 'Team Junior');
+            text.replace('google', 'Team chote ustaad') &&
+            text.replace('Google', 'Team chote ustaad');
         setPrompt(newText);
         speak(newText);
         setResponse(true);
