@@ -19,8 +19,6 @@
 span {
   color: rgba(175, 196, 212, 0.822);
   font-size: 2vmax;
-  /* background-clip: text;  */
-  /* color: transparent; */
 }
 
 #button {
