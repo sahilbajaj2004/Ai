@@ -320,14 +320,15 @@ function UserContext({ children }) {
                 <button
                     onClick={handleNewChat}
                     style={{
-                        position: 'absolute',
+                        position: 'fixed',
                         top: '20px',
                         left: '20px',
                         background: 'transparent',
                         border: 'none',
                         cursor: 'pointer',
                         color: 'white',
-                        fontSize:'25px'
+                        fontSize:'25px',
+                        zIndex: 1000
                     }}
                 >
                     <FaPlus />
