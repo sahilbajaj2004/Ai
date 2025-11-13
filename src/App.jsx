@@ -5,6 +5,7 @@ import { CiMicrophoneOn } from "react-icons/ci";
 import { datacontext } from './context/UserContext';
 import speakimg from "./assets/speak.gif"
 import aigif from "./assets/aiVoice.gif"
+import LoginPage from "./components/loginpage";
 function App() {
   let { recognition, speaking, setSpeaking, prompt, response, setPrompt, setResponse } = useContext(datacontext)
 
@@ -30,6 +31,7 @@ function App() {
         </div>
 
       }
+      <LoginPage />
 
 
 
