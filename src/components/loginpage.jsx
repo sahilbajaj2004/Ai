@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc, getDocs } from "firebase/firestore";
+import { getFirestore, collection, getDocs } from "firebase/firestore";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -38,24 +38,6 @@ const LoginPage = () => {
       setUser(null);
     } catch (error) {
       console.error("Error during logout:", error);
-    }
-  };
-
-  const saveChatMessage = async (message) => {
-    if (!user) {
-      console.error("User must be logged in to save chat messages.");
-      return;
-    }
-
-    try {
-      await addDoc(collection(db, "chatHistory"), {
-        userId: user.uid,
-        message,
-        timestamp: new Date(),
-      });
-      console.log("Chat message saved successfully.");
-    } catch (error) {
-      console.error("Error saving chat message:", error);
     }
   };
 
