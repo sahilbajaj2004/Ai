@@ -12,6 +12,24 @@ import run from '../gemini';
 
 export const datacontext = createContext();
 
+// document.addEventListener("DOMContentLoaded", () => {
+//     const createSnowflake = () => {
+//         const snowflake = document.createElement("div");
+//         snowflake.classList.add("snowflake");
+//         snowflake.textContent = "❄"; // Snowflake character
+//         snowflake.style.left = Math.random() * window.innerWidth + "px";
+//         snowflake.style.animationDuration = Math.random() * 5 + 4 + "s"; // Random fall duration
+//         snowflake.style.fontSize = Math.random() * 15 + 10 + "px"; // Random size
+//         document.body.appendChild(snowflake);
+
+//         // Remove snowflake after animation ends
+//         setTimeout(() => {
+//             snowflake.remove();
+//         }, 5000);
+//     };
+
+//     setInterval(createSnowflake, 200);
+// });
 
 function UserContext({ children }) {
     let [speaking, setSpeaking] = useState(false);
